@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   spark-iceberg:
     image: tabulario/spark-iceberg
@@ -21,6 +19,9 @@ services:
     ports:
       - 8888:8888
       - 8080:8080
+      - 4040:4040
+      - 4041:4041
+      - 4042:4042
       - 10000:10000
       - 10001:10001
   rest:
@@ -51,6 +52,7 @@ services:
     ports:
       - 9001:9001
       - 9000:9000
+      - 9999:9999
     command: ["server", "/data", "--console-address", ":9001"]
   mc:
     depends_on:

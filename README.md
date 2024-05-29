@@ -1,11 +1,10 @@
+# Data Platform Setup and Demonstration
 
-# Data Platform Setup and Usage
-
-This repository contains the setup for a data platform that includes Apache Spark, Apache Kafka, and Iceberg, among other components. Follow the instructions below to get the platform up and running.
+This project demonstrates a data platform setup using Docker, featuring Apache Spark, Apache Kafka, and Iceberg, along with a demonstration of streaming data processing with Apache Spark.
 
 ## Prerequisites
 
-- **Docker:** Install Docker by following the instructions [here](https://docs.docker.com/engine/install/).
+- **Docker:** Install Docker from [here](https://docs.docker.com/engine/install/).
 - **Visual Studio Code:** Download and install Visual Studio Code from [here](https://code.visualstudio.com/).
 
 ## Setup
@@ -24,54 +23,44 @@ This repository contains the setup for a data platform that includes Apache Spar
 
    This command starts all the necessary containers in the background (detached mode).
 
-## Explanation of Services
+## Services Overview
 
 The `docker-compose.yml` file defines several services that work together:
 
-- **pyspark-jupyter:** Jupyter Notebook environment with Apache Spark for data processing.
-- **ed-zookeeper:** Zookeeper service for coordination.
-- **ed-kafka:** Kafka message broker for streaming data.
-- **spark-iceberg:** Apache Spark with Iceberg integration for data storage and querying.
-- **rest:** Iceberg REST API for accessing data.
+- **spark-iceberg:** Jupyter Notebook environment with Apache Spark and Iceberg integration.
+- **iceberg-rest:** REST API for accessing Iceberg data.
 - **minio:** MinIO object storage for storing Iceberg tables.
 - **mc:** MinIO client for managing data in MinIO.
 
-## Creating a Kafka Topic
+## Additional Setup for Streaming Data Demonstration
 
-1. **Open Docker Desktop.**
-2. **Go to the "Containers" tab.**
-3. **Find the "ed-kafka" container.**
-4. **Click "Open shell".**
-5. **Run the following command to create a Kafka topic named "device-data":**
+1. **Open the `spark-iceberg` container:**
+   - Use Docker Desktop or run the following command in your terminal:
 
-    ```bash
-    kafka-topics --create --topic device-data --bootstrap-server localhost:29092
-    ```
+     ```bash
+     docker exec -it spark-iceberg /bin/bash
+     ```
 
-## Accessing Jupyter Notebook
-
-1. **Open your web browser and navigate to [http://localhost:8888](http://localhost:8888).**
-2. **Create a password to access Jupyter Notebook if prompted.**
-
-## Running the Data Producer
-
-1. **Open a terminal inside Visual Studio Code.**
-2. **Navigate to the project directory.**
-3. **Run the following command to start the data producer:**
+2. **Install `ncat` and start a socket listener:**
 
     ```bash
-    python producer.py
+    sudo sh -c 'apt-get update; sudo apt-get install -y ncat; sudo ncat -l 9999'
     ```
 
-   This will send data to the "device-data" Kafka topic.
+3. **Access Jupyter Notebook:**
+   - Open your web browser and navigate to [http://localhost:8888](http://localhost:8888).
+   - Open the `notebooks` folder to find the example notebooks `01_data_frame_example.ipynb` and `02_reading_from_sockets.ipynb`.
 
-## Data Processing and Storage
+## Demonstration of Socket Streaming and Processing
 
-The Apache Spark application will consume the streaming data from Kafka, process it, and save it into Iceberg tables stored in MinIO.
+1. **Open the notebook `02_reading_from_sockets.ipynb` in Jupyter Notebook.**
+2. **Run all cells in the notebook:**
+   - This notebook demonstrates streaming data processing where Apache Spark consumes data from the socket, processes it to count words, and displays the results in the console.
 
 ## Additional Notes
 
 - The `docker-compose.yml` file contains environment variables for configuration. Modify them as needed to suit your requirements.
 - Refer to the documentation of each service for more details.
+- For Kafka topic creation and data production, please refer to the detailed README section in the project directory.
 
-This README provides a basic overview of the project. Feel free to explore the code and experiment further.
+Feel free to explore the code and experiment further with the notebooks and services provided.
