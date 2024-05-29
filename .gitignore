@@ -155,4 +155,5 @@ cython_debug/
 
 notebooks/output
 notebooks/.ipynb_checkpoints
-notebooks/checkpoint_dir_kafka
+notebooks/checkpoint
+notebooks/.Trash-0
